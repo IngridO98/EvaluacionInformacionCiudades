@@ -19,13 +19,13 @@ import java.util.ArrayList;
 
 public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.ViewHolderDatos> {
 
-    ArrayList<Model> listaPaises;
+   // ArrayList<Model> listaPaises;
+    private Model.Modelo[] Paises;
     Activity activity;
     RequestOptions opcion;
 
-    public AdaptadorRecycler(ArrayList<Model> listaPaises, Activity activity) {
-        this.listaPaises = listaPaises;
-        this.activity = activity;
+    public AdaptadorRecycler(Model.Modelo[] Paises) {
+        this.Paises = Paises;
         opcion=new RequestOptions().centerCrop().placeholder(R.drawable.fondoimagen).error(R.drawable.fondoimagen);
     }
 
@@ -38,17 +38,14 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
 
     @Override
     public void onBindViewHolder(@NonNull AdaptadorRecycler.ViewHolderDatos holder, int position) {
-        holder.txtNombre.setText(listaPaises.get(position).getName());
-
-        Glide.with(holder.itemView).load("//www.geognos.com/api/en/countries/flag/"+listaPaises.get(position).getAlpha2Code()+".png").into(holder.Foto);
-
-        //http://www.geognos.com/api/en/countries/flag/{alpha2code}.png
-
+        try{
+            holder.Pasar(Paises[position]);
+        } catch (Exception e){}
     }
 
     @Override
     public int getItemCount() {
-        return listaPaises.size();
+        return Paises.length;
     }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder{
@@ -59,6 +56,16 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
             super(itemView);
             txtNombre=itemView.findViewById(R.id.NomPais);
             Foto=itemView.findViewById(R.id.imgFoto);
+        }
+
+        public void Pasar(Model.Modelo modelo) {
+            //Asignando los valores
+            txtNombre.setText(modelo.getName());
+
+            Glide.with(itemView).load("//www.geognos.com/api/en/countries/flag/"+modelo.getAlpha2Code()+".png").into(Foto);
+
+            //http://www.geognos.com/api/en/countries/flag/{alpha2code}.png
+
         }
     }
 }
