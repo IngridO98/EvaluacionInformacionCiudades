@@ -1,6 +1,7 @@
 package com.example.evaluacioninformacionciudades;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +11,16 @@ import android.widget.Toast;
 import com.example.evaluacioninformacionciudades.Adaptadores.AdaptadorRecycler;
 import com.example.evaluacioninformacionciudades.Model.Model;
 import com.example.evaluacioninformacionciudades.Retrofit.PaisesNomRetrofit;
+import com.example.evaluacioninformacionciudades.WebService.Asynchtask;
+import com.example.evaluacioninformacionciudades.WebService.WebService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Asynchtask {
     RecyclerView recy;
 
     @Override
@@ -27,32 +36,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retro = new Retrofit.Builder().baseUrl(" https://restcountries.eu/").addConverterFactory(GsonConverterFactory.create()).build();
+        Map<String, String> datos = new HashMap<String, String>();
+        WebService ws= new WebService("https://restcountries.eu/rest/v2/all",
+                datos, MainActivity.this, MainActivity.this);
+        ws.execute("GET");
+    }
 
-        PaisesNomRetrofit paisesNomRetrofit= retro.create(PaisesNomRetrofit.class);
+    public void solicitudJson(){
 
-        Call<Model> call=paisesNomRetrofit.getPaisesNomRetrofit();
-        call.enqueue(new Callback<Model>() {
-            @Override
-            public void onResponse(Call<Model> call, Response<Model> response) {
+    }
 
-                Model model=response.body();
-                Model.Modelo[] listapaises= model.getModel();
-                recy=(RecyclerView) findViewById(R.id.recyViewPaises);
-                LinearLayoutManager llm= new LinearLayoutManager(getApplicationContext());
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                recy.setLayoutManager(llm);
-                AdaptadorRecycler adaptador = new AdaptadorRecycler(listapaises);
-                recy.setAdapter(adaptador);
-            }
+    @Override
+    public void processFinish(String result) throws JSONException {
+        ArrayList<Model> lsModel = new ArrayList<Model> ();
+        try {
+            JSONArray JSONlistaRestaurants= new JSONArray(result);
+            lsModel = Model.JsonObjectsBuild(JSONlistaRestaurants);
 
-            @Override
-            public void onFailure(Call<Model> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Error," +t.toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+            //agregar datos al recyclerView
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyViewPaises);
+            recyclerView.setLayoutManager(new GridLayoutManager(this,3));
 
-
-
+            AdaptadorRecycler adapter= new AdaptadorRecycler(lsModel);
+            recyclerView.setAdapter(adapter);
+        }catch (JSONException e)
+        {
+            Toast.makeText(this.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG);
+        }
     }
 }
