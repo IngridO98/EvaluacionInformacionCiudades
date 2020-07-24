@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity implements Asynchtask {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                    Bundle pasar= new Bundle();
+                    //Bundle pasar= new Bundle();
                     //pasar.putString("Mensaje", "Login Exitoso!");
-                    pasar.putString("Codi3", lsModel.get(recyclerView.getChildAdapterPosition(v)).getAlpha3Code());
-                    intent.putExtras(pasar);
+                   // pasar.putString("Codi3", lsModel.get(recyclerView.getChildAdapterPosition(v)).getAlpha3Code());
+                  //  intent.putExtras(pasar);
                     //Iniciamos la nueva actividad
                     startActivity(intent);
                 }

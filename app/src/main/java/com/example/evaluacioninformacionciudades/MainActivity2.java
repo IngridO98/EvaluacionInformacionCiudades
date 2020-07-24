@@ -10,11 +10,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity2 extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 
+   // DrawerLayout drawerLayout;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;

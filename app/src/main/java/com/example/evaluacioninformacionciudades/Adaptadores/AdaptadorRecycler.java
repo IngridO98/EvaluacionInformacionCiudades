@@ -41,7 +41,6 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
     @Override
     public void onBindViewHolder(@NonNull AdaptadorRecycler.ViewHolderDatos holder, int position) {
         holder.txtNombre.setText(listaPaises.get(position).getName());
-        holder.txtCod3.setText(listaPaises.get(position).getAlpha3Code());
 
         Glide.with(holder.itemView)
                 .load("http://www.geognos.com/api/en/countries/flag/"+listaPaises.get(position).getAlpha2Code()+".png")
@@ -65,13 +64,12 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
     }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder{
-        TextView txtNombre, txtCod3;
+        TextView txtNombre;
         ImageView Foto;
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
             txtNombre=itemView.findViewById(R.id.NomPais);
-            txtCod3=itemView.findViewById(R.id.Code3);
             Foto=itemView.findViewById(R.id.imgFoto);
         }
     }
