@@ -27,4 +27,5 @@ public class Model {
     public void setAlpha3Code(String alpha3Code) {
         this.alpha3Code = alpha3Code;
     }
+
 }
