@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/General"
+        android:icon="@drawable/icon_informacion"
+        android:title="Informacion General" />
+    <item
+        android:id="@+id/Lenguaje"
+        android:icon="@drawable/icon_lenguaje"
+        android:title="Lenguaje" />
+    <item
+        android:id="@+id/Bandera"
+        android:icon="@drawable/icon_bandera"
+        android:title="Bandera" />
+
+</menu>

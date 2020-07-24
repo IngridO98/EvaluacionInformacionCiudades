@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.evaluacioninformacionciudades.Adaptadores.AdaptadorRecycler;
@@ -42,22 +44,31 @@ public class MainActivity extends AppCompatActivity implements Asynchtask {
         ws.execute("GET");
     }
 
-    public void solicitudJson(){
-
-    }
-
+    ArrayList<Model> lsModel = new ArrayList<Model> ();
     @Override
     public void processFinish(String result) throws JSONException {
-        ArrayList<Model> lsModel = new ArrayList<Model> ();
+
         try {
             JSONArray JSONlistaRestaurants= new JSONArray(result);
             lsModel = Model.JsonObjectsBuild(JSONlistaRestaurants);
 
             //agregar datos al recyclerView
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyViewPaises);
+            final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyViewPaises);
             recyclerView.setLayoutManager(new GridLayoutManager(this,3));
 
             AdaptadorRecycler adapter= new AdaptadorRecycler(lsModel);
+            adapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                    Bundle pasar= new Bundle();
+                    //pasar.putString("Mensaje", "Login Exitoso!");
+                    pasar.putString("Codi3", lsModel.get(recyclerView.getChildAdapterPosition(v)).getAlpha3Code());
+                    intent.putExtras(pasar);
+                    //Iniciamos la nueva actividad
+                    startActivity(intent);
+                }
+            });
             recyclerView.setAdapter(adapter);
         }catch (JSONException e)
         {

@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.ViewHolderDatos> implements View.OnClickListener {
 
    ArrayList<Model> listaPaises;
-  //  private Model.Modelo[] Paises;
+
     private View.OnClickListener listener;
     Activity activity;
     RequestOptions opcion;
-//dele
+
     public AdaptadorRecycler(ArrayList<Model> listaPaises) {
         this.listaPaises = listaPaises;
         opcion=new RequestOptions().centerCrop().placeholder(R.drawable.fondoimagen).error(R.drawable.fondoimagen);
@@ -41,7 +41,8 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
     @Override
     public void onBindViewHolder(@NonNull AdaptadorRecycler.ViewHolderDatos holder, int position) {
         holder.txtNombre.setText(listaPaises.get(position).getName());
-        //holder.codigoPaisHolder=(listaPaises.get(position).getAlpha2Code());
+        holder.txtCod3.setText(listaPaises.get(position).getAlpha3Code());
+
         Glide.with(holder.itemView)
                 .load("http://www.geognos.com/api/en/countries/flag/"+listaPaises.get(position).getAlpha2Code()+".png")
                 .into(holder.Foto);
@@ -64,12 +65,13 @@ public class AdaptadorRecycler extends RecyclerView.Adapter<AdaptadorRecycler.Vi
     }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder{
-        TextView txtNombre;
+        TextView txtNombre, txtCod3;
         ImageView Foto;
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
             txtNombre=itemView.findViewById(R.id.NomPais);
+            txtCod3=itemView.findViewById(R.id.Code3);
             Foto=itemView.findViewById(R.id.imgFoto);
         }
     }
